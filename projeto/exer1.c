@@ -21,6 +21,10 @@ typedef struct curso {
 } Curso;
 
 Disciplina *criarNoDisciplina(int codigo, char nome[], int bloco, int carga) {
+    // Essa funcao recebe os parametros: codigo:inteiro, nome:string, bloco:inteiro e carga:inteiro.
+    // Ela vai alocar um espaco de memoria para a disciplina, em seguida atribuir os valores passados 
+    // por parametro para cada area da struct.
+    // Por fim vai retornar a struct que corresponde a nova disciplina criada.
     Disciplina *new = (Disciplina*) malloc (sizeof(Disciplina));
     new->codigo_disciplina = codigo;
     strcpy(new->nome_disciplina, nome);
@@ -45,9 +49,10 @@ Disciplina *criarNoDisciplina(int codigo, char nome[], int bloco, int carga) {
 // }
 
 void imprimirDisciplinas(Disciplina *raiz) {
+    // Essa funcao recebe a struct com o curso apontando para as disciplinas e imprime os dados das disciplinas do curso
     if (raiz != NULL){
-        imprimirDisciplinas(raiz->esq);
         printf("\nDados da disciplina:\nCodigo: %d\nNome: %s\nBloco: %d\nCarga horaria: %d\n\n", raiz->codigo_disciplina, raiz->nome_disciplina, raiz->bloco, raiz->carga_horaria);
+        imprimirDisciplinas(raiz->esq);
         imprimirDisciplinas(raiz->dir);
     }
 }
@@ -64,35 +69,58 @@ void imprimirDisciplinas(Disciplina *raiz) {
 //     }
 // }
 
-void imprimirDisciplinasPorCodigoCurso(Curso *raiz, int codigo_curso) {
+int imprimirDisciplinasPorCodigoCurso(Curso *raiz, int codigo_curso) {
+    // Essa funcao tem como parametros: raiz:struct e codigo_curso:inteiro.
+    // Ela vai percorrer a arvore ate acha o codigo do curso que equivale ao valor passado ou ate encontrar NULL.
+    // Se o curso for encontrado, a funcao "imprimirDisciplinas" vai ser chamada e a variavel que verifica se 
+    // o curso foi encontrado recebe 1.
+    // return: encontrou:inteiro.
+
+    int encontrou = 0;
+
     if (raiz != NULL) {
-        imprimirDisciplinasPorCodigoCurso(raiz->esq, codigo_curso);
+        if(codigo_curso < raiz->codigo_curso)
+            encontrou = imprimirDisciplinasPorCodigoCurso(raiz->esq, codigo_curso);
 
-        if (raiz->codigo_curso == codigo_curso) {
+        if (raiz->codigo_curso == codigo_curso){
             imprimirDisciplinas(raiz->arvoreDisciplina);
-        } 
+            encontrou = 1;
+        }
+        
+        if(codigo_curso > raiz->codigo_curso)
+            encontrou = imprimirDisciplinasPorCodigoCurso(raiz->dir, codigo_curso);
 
-        imprimirDisciplinasPorCodigoCurso(raiz->dir, codigo_curso);
+        return (encontrou);
     }
 }
 
 void procuraDisciplina(Disciplina *disciplina, int codigo_disciplina) {
+    // Parametros:
+    //  disciplina:struct
+    //  codigo_disciplina:inteiro
+    // Essa funcao vai procurar uma disciplina pelo codigo passado e vai imprimir seus dados na tela
+
     //raiz->arvoreDisciplina->codigo_disciplina == codigo_disciplina
     if (disciplina != NULL){
         if (disciplina->codigo_disciplina == codigo_disciplina){
-            printf("\nDados da disciplina:\nCodigo: %d\nNome: %s\nBloco: %d\nCarga horaria: %d\n\n", disciplina->codigo_disciplina, disciplina->nome_disciplina, disciplina->bloco, disciplina->carga_horaria);
+            printf("\nDados da disciplina:\nCodigo: %d\nNome: %s\nBloco: %d\nCarga horaria: %d\n\n", 
+            disciplina->codigo_disciplina, disciplina->nome_disciplina, disciplina->bloco, disciplina->carga_horaria);
+        } else if (codigo_disciplina < disciplina->codigo_disciplina){
+            procuraDisciplina(disciplina->esq, codigo_disciplina);
         } else {
-            if (codigo_disciplina < disciplina->codigo_disciplina){
-                procuraDisciplina(disciplina->esq, codigo_disciplina);
-            } else {
-                procuraDisciplina(disciplina->dir, codigo_disciplina);
-            }
+            procuraDisciplina(disciplina->dir, codigo_disciplina);
         }
     }
 }
 
-// Imprimir os dados de uma disciplina dado o código dela e do curso ao qual ela pertence;
+
 void imprimirDadosDisciplinasDadoCodigoCurso(Curso *raiz, int codigo_curso, int codigo_disciplina){
+    // Parametros:
+    //  raiz:struct
+    //  codigo_curso:inteiro
+    //  codigo_disciplina:inteiro
+    // Esta funcao vai imprimir os dados de uma disciplina dado o código dela e do curso ao qual ela pertence;
+
     if (raiz != NULL){
         if (raiz->codigo_curso == codigo_curso){
             procuraDisciplina(raiz->arvoreDisciplina, codigo_disciplina);
@@ -107,6 +135,8 @@ void imprimirDadosDisciplinasDadoCodigoCurso(Curso *raiz, int codigo_curso, int 
     }
 }
 
+
+// @@@@@@@@@@@@@@@@@@@@@ O QUE É ESSA FUNCAO??????? @@@@@@@@@@@@@@@@@@@@@@@@@
 void procuraDisciplina2(Disciplina *disciplina, int bloco, int codigo_disciplina) {
     if (disciplina != NULL){
         if (disciplina->bloco == bloco){
@@ -159,6 +189,15 @@ void imprimirDisCargaHoraria(Curso *raiz, int codigo_curso, int carga_horaria) {
 }
 
 
+int exclrDiscpln(Disciplina **raiz, int codgDis, int codgCurs){
+    int excl = 0;
+
+    // if((*raiz) != NULL){
+
+    // }
+}
+
+
 Curso *criarNoCurso(int codigo, char nome_curso[], int quantidade_blocos, int num_semanas) {
     Curso *new = (Curso*) malloc (sizeof(Curso));
     new->codigo_curso = codigo;
@@ -182,15 +221,19 @@ void inserirCurso(Curso **raiz, Curso *curso) {
 }
 
 Curso *buscarCursoPorCodigo(Curso *raiz, int codigo) {
+    Curso *curso = (Curso*) malloc (sizeof(Curso));
+
     if (raiz == NULL || raiz->codigo_curso == codigo) {
-        return raiz;
+        curso = raiz;
     }
 
     if (codigo < raiz->codigo_curso) {
-        return buscarCursoPorCodigo(raiz->esq, codigo);
+        curso = buscarCursoPorCodigo(raiz->esq, codigo);
     } else {
-        return buscarCursoPorCodigo(raiz->dir, codigo);
+        curso = buscarCursoPorCodigo(raiz->dir, codigo);
     }
+
+    return (curso);
 }
 
 
