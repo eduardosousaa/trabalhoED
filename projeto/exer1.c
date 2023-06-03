@@ -153,10 +153,10 @@ void imprimirDadosDisciplinasDadoCodigoCurso(Curso *raiz, int codigo_curso, int 
 void procuraDisciplina2(Disciplina *disciplina, int bloco, int codigo_disciplina) {
     if (disciplina != NULL){
         if (disciplina->bloco == bloco){
-            procuraDisciplina2(disciplina->esq, bloco, codigo_disciplina);
             printf("\nDados da disciplina:\nCodigo: %d\nNome: %s\nBloco: %d\nCarga horaria: %d\n\n", disciplina->codigo_disciplina, disciplina->nome_disciplina, disciplina->bloco, disciplina->bloco);
-            procuraDisciplina2(disciplina->dir, bloco, codigo_disciplina);
-        } 
+        }
+        procuraDisciplina2(disciplina->esq, bloco, codigo_disciplina);
+        procuraDisciplina2(disciplina->dir, bloco, codigo_disciplina);
     }
 }
 
@@ -179,10 +179,10 @@ void imprimirDisciplinasBloco(Curso *raiz, int bloco, int codigo_curso) {
 void procuraDisciplina3(Disciplina *disciplina, int carga_horaria, int codigo_disciplina) {
     if (disciplina != NULL){
         if (disciplina->carga_horaria == carga_horaria){
-            procuraDisciplina3(disciplina->esq, carga_horaria, codigo_disciplina);
             printf("\nDados da disciplina:\nCodigo: %d\nNome: %s\nBloco: %d\nCarga horaria: %d\n\n", disciplina->codigo_disciplina, disciplina->nome_disciplina, disciplina->bloco, disciplina->carga_horaria);
-            procuraDisciplina3(disciplina->dir, carga_horaria, codigo_disciplina);
-        } 
+        }
+        procuraDisciplina3(disciplina->esq, carga_horaria, codigo_disciplina);
+        procuraDisciplina3(disciplina->dir, carga_horaria, codigo_disciplina);
     }
 }
 
@@ -197,60 +197,6 @@ void imprimirDisCargaHoraria(Curso *raiz, int codigo_curso, int carga_horaria) {
             } else {
                 imprimirDisCargaHoraria(raiz->dir, codigo_curso, carga_horaria);
             }
-        }
-    }
-}
-
-void buscarfolha(Disciplina **ultimo, Disciplina *filho){
-    if(*ultimo){
-        buscarfolha(&((*ultimo)->dir), filho);
-    }
-    else {
-        *ultimo = filho;
-    }
-}
-
-
-void removerDisciplina(Disciplina **raiz,int codigo){
-    if (*raiz != NULL){
-        Disciplina *aux;
-        if((*raiz)->codigo_disciplina == codigo){
-            if((*raiz)->esq == NULL && (*raiz)->dir == NULL){
-                free(*raiz);
-                (*raiz) = NULL;
-            }
-            else if((*raiz)->esq == NULL || (*raiz)->dir == NULL){
-                Disciplina *endFilho;
-                if((*raiz)->esq != NULL){
-                    aux = *raiz;
-                    endFilho = (*raiz)->esq;
-                    *raiz = endFilho;
-                    free(aux);
-                    aux = NULL;
-                }
-                else{
-                    aux = *raiz;
-                    endFilho = (*raiz)->dir;
-                    *raiz = endFilho;
-                    free(aux);
-                    aux = NULL;
-                }
-            }
-            else{
-                Disciplina *filho;
-                aux = *raiz;
-                filho = (*raiz)->esq;
-                buscarfolha(&((*raiz)->esq), (*raiz)->dir);
-                *raiz = filho;
-                free(aux);      
-                aux = NULL;          
-            }
-        }
-        else if (codigo < (*raiz)->codigo_disciplina){
-            removerDisciplina(&(*raiz)->esq,codigo);
-        }
-        else{
-            removerDisciplina(&(*raiz)->dir,codigo);
         }
     }
 }
@@ -320,9 +266,69 @@ void imprimirCursosPorBlocosIguais(Curso *raiz, int quant_blocos) {
     if (raiz != NULL){
         if (raiz->quantidade_blocos == quant_blocos){
             printf("\nDados do curso:\nCodigo: %d\nNome: %s\nQuantidade de blocos: %d\nNumero de semanas: %d\n\n", raiz->codigo_curso, raiz->nome_curso, raiz->quantidade_blocos, raiz->num_semanas);
-            imprimirCursosPorBlocosIguais(raiz->esq, quant_blocos);
-            imprimirCursosPorBlocosIguais(raiz->dir, quant_blocos);
-        } 
+        }
+        imprimirCursosPorBlocosIguais(raiz->esq, quant_blocos);
+        imprimirCursosPorBlocosIguais(raiz->dir, quant_blocos);
+    }
+}
+
+// Usada para encontrar a folha mais à direita em uma subárvore
+// Até encontrar o último nó à direita e atribuindo o novo nó folha a esse local.
+void buscarfolha(Disciplina **ultimo, Disciplina *filho){
+    if(*ultimo){
+        buscarfolha(&((*ultimo)->dir), filho);
+    }
+    else {
+        (*ultimo) = filho;
+    }
+}
+
+
+void removerDisciplina(Disciplina **raiz,int codigo){
+    if (*raiz != NULL){
+        Disciplina *aux;
+        if((*raiz)->codigo_disciplina == codigo){
+            // Se o nó não tem filhos
+            if((*raiz)->esq == NULL && (*raiz)->dir == NULL){
+                free(*raiz);
+                (*raiz) = NULL;
+            }
+            // Se o nó tem apenas um filho
+            else if((*raiz)->esq == NULL || (*raiz)->dir == NULL){
+                Disciplina *endFilho;
+                if((*raiz)->esq != NULL){
+                    aux = *raiz;
+                    endFilho = (*raiz)->esq;
+                    *raiz = endFilho;
+                    free(aux);
+                    aux = NULL;
+                }
+                else{
+                    aux = *raiz;
+                    endFilho = (*raiz)->dir;
+                    *raiz = endFilho;
+                    free(aux);
+                    aux = NULL;
+                }
+            }
+            else{
+                Disciplina *filho;
+                aux = *raiz;
+                filho = (*raiz)->esq;
+                // encontrar o nó folha mais à direita da subárvore esquerda, que será movido para o lugar do nó a ser removido.
+                buscarfolha(&((*raiz)->esq), (*raiz)->dir);
+                *raiz = filho;
+                free(aux);      
+                aux = NULL;          
+            }
+        }
+        else if (codigo < (*raiz)->codigo_disciplina){
+            removerDisciplina(&(*raiz)->esq,codigo);
+        }
+        else {
+            removerDisciplina(&(*raiz)->dir,codigo);
+        }
+
     }
 }
 
@@ -331,7 +337,7 @@ void buscarCursoParaRemover(Curso **raiz, int codigo_disciplina, int codigo){
         if ((*raiz)->codigo_curso == codigo){
             removerDisciplina(&(*raiz)->arvoreDisciplina, codigo_disciplina);
         }
-        else if ((*raiz)->codigo_curso > codigo){
+        else if (codigo < (*raiz)->codigo_curso){
             buscarCursoParaRemover(&(*raiz)->esq, codigo_disciplina, codigo);
         }
         else {
@@ -345,16 +351,17 @@ void buscarfolhaCurso(Curso **filho1, Curso *filho2){
         buscarfolhaCurso(&((*filho1)->dir), filho2);
     }
     else {
-        *filho1 = filho2;
+        (*filho1) = filho2;
     }
 }
 
 Curso *enderecoFilho(Curso *raiz) {
     Curso *aux;
-    if (raiz->dir)
+    if (raiz->dir) {
         aux = raiz->dir;
-    else 
+    } else {
         aux = raiz->esq;
+    }
     return aux;
 }
 
@@ -362,6 +369,7 @@ void removerCurso(Curso **raiz, int codigo){
     if (*raiz != NULL){
         Curso *aux;
         if((*raiz)->codigo_curso == codigo){
+            //Verifica se o curso não tem discciplinas para poder remover
             if ((*raiz)->arvoreDisciplina == NULL){
                 if((*raiz)->esq == NULL && (*raiz)->dir == NULL){
                 free(*raiz);
@@ -394,67 +402,4 @@ void removerCurso(Curso **raiz, int codigo){
     }
 }
 
-int main() {
-    srand(time(NULL));
 
-    Curso  *arvoreCursos;
-    arvoreCursos = NULL;
-    
-
-    // Exemplo de inserção de cursos e disciplinas
-    inserirCurso(&arvoreCursos, criarNoCurso(10, "Engenharia", 15, 20));
-    inserirCurso(&arvoreCursos, criarNoCurso(20, "Sistemas de Informacao", 15, 20));
-    inserirCurso(&arvoreCursos, criarNoCurso(30, "Medicina", 20, 20));
-    
-    Curso *aux, *aux2;
-
-    aux = buscarCursoPorCodigo(arvoreCursos, 20);
-    // printf("%s\n", aux->nome_curso);
-    aux = buscarCursoPorCodigo(arvoreCursos, 20);
-    // printf("%s\n", aux->nome_curso);
-    aux2 = buscarCursoPorCodigo(arvoreCursos, 30);
-
-    inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(1, "ED1", 6, 60));
-    inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(2, "ED2", 6, 60));
-    inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(3, "PAA", 4, 50));
-    inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(4, "TCC1", 4, 50));
-
-    // printf("%s\n", aux->nome_curso);
-    
-    // printf("%s\n", aux2->arvoreDisciplina->nome_disciplina);
-
-    //Imprimindo todos os cursos da árvore
-    // imprimirCursos(arvoreCursos);
-    // printf("\n");
-    // imprimirDisciplinas(aux->arvoreDisciplina);
-
-    //Imprimindo dados de um curso especifico de acordo com o seu código
-    // imprimirCursoPeloCodigo(arvoreCursos, 20);
-
-    //Imprimir todos os cursos com a mesma quantidade de blocos, onde o usuário informe a quantidade de blocos
-    // imprimirCursosPorBlocosIguais(arvoreCursos, 15);
-
-    //Imprimir a árvore de disciplinas em ordem crescente pelo código das disciplinas dado o código do curso;
-    // imprimirDisciplinasPorCodigoCurso(arvoreCursos, 20);
-
-    // imprimir os dados de uma disciplina dado o código dela e do curso ao qual ela pertence;
-    // imprimirDadosDisciplinasDadoCodigoCurso(arvoreCursos, 20, 1);
-
-    // Imprimir as disciplinas de um determinado bloco de um curso, dado o bloco e o código do curso;
-    // imprimirDisciplinasBloco(arvoreCursos, 6, 20);
-
-    // Imprimir todas as disciplinas de um determinado curso com a mesma carga horária, onde o código do curso e a carga horária devem ser informadas pelo usuário;
-    // imprimirDisCargaHoraria(arvoreCursos, 20, 60);
-
-    // Excluir uma disciplina dado o código da disciplina e o código do curso;
-    // buscarCursoParaRemover(&arvoreCursos, 3, 20);
-
-    // Excluir um curso dado o código do mesmo, desde que não tenha nenhuma disciplina cadastrada para aquele curso.
-    // removerCurso(&arvoreCursos, 20);
-
-    // imprimirCursos(arvoreCursos);
-    //Imprimindo todos os cursos da árvore
-    // imprimirDisciplinas(aux->arvoreDisciplina);
-
-    return 0;
-}
