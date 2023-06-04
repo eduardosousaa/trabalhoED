@@ -1,5 +1,19 @@
-typedef struct curso Curso;
-typedef struct disciplina Disciplina;
+typedef struct disciplina {
+    int codigo_disciplina;
+    char nome_disciplina[50];
+    int bloco;
+    int carga_horaria;
+    struct disciplina *esq, *dir;
+}Disciplina;
+
+typedef struct curso {
+    int codigo_curso;
+    char nome_curso[50];
+    int quantidade_blocos;
+    int num_semanas;
+    struct disciplina *arvoreDisciplina;
+    struct curso *esq, *dir;
+}Curso;
 
 Disciplina *criarNoDisciplina(int codigo, char nome[], int bloco, int carga);
 void inserirDisciplina(Disciplina **raiz, Disciplina *noDis);

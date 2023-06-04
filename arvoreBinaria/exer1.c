@@ -3,24 +3,8 @@
 #include <string.h>
 #include <time.h>
 
-#include "exerc1.h"
+#include "exer1.h"
 
-struct disciplina {
-    int codigo_disciplina;
-    char nome_disciplina[50];
-    int bloco;
-    int carga_horaria;
-    struct disciplina *esq, *dir;
-};
-
-struct curso {
-    int codigo_curso;
-    char nome_curso[50];
-    int quantidade_blocos;
-    int num_semanas;
-    struct disciplina *arvoreDisciplina;
-    struct curso *esq, *dir;
-};
 
 Disciplina *criarNoDisciplina(int codigo, char nome[], int bloco, int carga) {
     // Essa funcao recebe os parametros: codigo:inteiro, nome:string, bloco:inteiro e carga:inteiro.
@@ -37,18 +21,18 @@ Disciplina *criarNoDisciplina(int codigo, char nome[], int bloco, int carga) {
     return new;
 }
 
-void inserirDisciplina(Disciplina **raiz, Disciplina *noDis){
+
+void inserirDisciplina(Disciplina **raiz, Disciplina *noDis) {
     // Essa funcao recebe a struct com o curso apontando para as disciplinas e imprime os dados das disciplinas do curso
-    if (raiz) {
-        if (!(*raiz)) {
-            *raiz = noDis;
-        } else if ((*noDis).codigo_disciplina < (**raiz).codigo_disciplina){
-            inserirDisciplina(&((*raiz)->esq), noDis);
-        } else {
-            inserirDisciplina(&((*raiz)->dir), noDis);
-        }
+    if (*raiz == NULL) {
+        *raiz = noDis;
+    } else if (noDis->codigo_disciplina < (*raiz)->codigo_disciplina) {
+        inserirDisciplina(&((*raiz)->esq), noDis);
+    } else {
+        inserirDisciplina(&((*raiz)->dir), noDis);
     }
 }
+
 
 void imprimirDisciplinas(Disciplina *raiz) {
     // Essa funcao recebe a struct com o curso apontando para as disciplinas e imprime os dados das disciplinas do curso
