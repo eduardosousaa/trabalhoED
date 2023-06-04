@@ -15,6 +15,9 @@ typedef struct curso {
     struct curso *esq, *dir;
 }Curso;
 
+void embaralhar(int *array, int tamanho);
+int sortearNumero();
+
 Disciplina *criarNoDisciplina(int codigo, char nome[], int bloco, int carga);
 void inserirDisciplina(Disciplina **raiz, Disciplina *noDis);
 void imprimirDisciplinas(Disciplina *raiz);

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <windows.h>
 
 #include "exer1.h"
 
@@ -13,59 +14,12 @@ int main() {
 
     Curso *aux, *aux2, *aux3, *aux4, *aux5, *aux6;
     aux = NULL;
-    
 
-    // Exemplo de inserção de cursos e disciplinas
-    inserirCurso(&arvoreCursos, criarNoCurso(10, "Engenharia", 15, 20));
-    inserirCurso(&arvoreCursos, criarNoCurso(20, "Sistemas de Informacao", 15, 20));
-    inserirCurso(&arvoreCursos, criarNoCurso(30, "Medicina", 20, 20));
-    inserirCurso(&arvoreCursos, criarNoCurso(40, "Administracao", 18, 25));
-    inserirCurso(&arvoreCursos, criarNoCurso(50, "Direito", 20, 30));
-    inserirCurso(&arvoreCursos, criarNoCurso(60, "Psicologia", 15, 22));
-    
-    
+    int cod_curso, num_semanas, qtd_blocos, cod_disc, bloco_curso, carga_horaria, bloco_dis;
+    char nome_curso[100], nome_dis[100];
 
-    aux = buscarCursoPorCodigo(arvoreCursos, 20);
-    printf("%s\n", aux->nome_curso);
-    // aux = buscarCursoPorCodigo(arvoreCursos, 20);
-    // printf("%s\n", aux->nome_curso);
-    // aux2 = buscarCursoPorCodigo(arvoreCursos, 30);
-
-    inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(1, "ED1", 6, 60));
-    inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(2, "ED2", 6, 60));
-    inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(3, "PAA", 4, 50));
-    inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(4, "TCC1", 4, 50));
-
-    aux2 = buscarCursoPorCodigo(arvoreCursos, 10);
-    inserirDisciplina(&aux2->arvoreDisciplina, criarNoDisciplina(12, "Anatomia", 6, 60));
-    inserirDisciplina(&aux2->arvoreDisciplina, criarNoDisciplina(14, "Fisiologia", 6, 60));
-    inserirDisciplina(&aux2->arvoreDisciplina, criarNoDisciplina(13, "Farmacologia", 4, 60));
-    inserirDisciplina(&aux2->arvoreDisciplina, criarNoDisciplina(5, "Farmacologia", 4, 60));
-    inserirDisciplina(&aux2->arvoreDisciplina, criarNoDisciplina(10, "Farmacologia", 4, 60));
-    inserirDisciplina(&aux2->arvoreDisciplina, criarNoDisciplina(7, "Farmacologia", 4, 60));
-
-    aux3 = buscarCursoPorCodigo(arvoreCursos, 30);
-    inserirDisciplina(&aux3->arvoreDisciplina, criarNoDisciplina(15, "Patologia", 6, 60));
-    inserirDisciplina(&aux3->arvoreDisciplina, criarNoDisciplina(16, "Neurologia", 6, 60));
-    inserirDisciplina(&aux3->arvoreDisciplina, criarNoDisciplina(17, "Cirurgia", 4, 50));
-    
-    aux4 = buscarCursoPorCodigo(arvoreCursos, 40);
-    inserirDisciplina(&aux4->arvoreDisciplina, criarNoDisciplina(5, "Economia", 6, 60));
-    inserirDisciplina(&aux4->arvoreDisciplina, criarNoDisciplina(6, "Gestao de Pessoas", 4, 50));
-    inserirDisciplina(&aux4->arvoreDisciplina, criarNoDisciplina(7, "Marketing", 4, 50));
-
-    aux5 = buscarCursoPorCodigo(arvoreCursos, 50);
-    inserirDisciplina(&aux5->arvoreDisciplina, criarNoDisciplina(8, "Direito Civil", 6, 60));
-    inserirDisciplina(&aux5->arvoreDisciplina, criarNoDisciplina(9, "Direito Penal", 6, 60));
-
-    aux6 = buscarCursoPorCodigo(arvoreCursos, 60);
-    inserirDisciplina(&aux6->arvoreDisciplina, criarNoDisciplina(10, "Psicologia do Desenvolvimento", 4, 50));
-    inserirDisciplina(&aux6->arvoreDisciplina, criarNoDisciplina(11, "Psicologia Clínica", 4, 50));
-
-
-
-    int cod_curso, qtd_blocos, cod_disc, bloco_curso, carga_horaria;
     int opcao = -1;
+
     while(opcao != 0){
         printf("\n");
         printf("0 - Encerrar\n"
@@ -87,11 +41,34 @@ int main() {
             break;
 
         case 1:
-            
+            printf("Digite o codigo do curso: ");
+            scanf("%d", &cod_curso);
+            printf("Nome do curso: ");
+            scanf("%s", nome_curso);
+            printf("Quantidade de blocos: ");
+            scanf("%d", &qtd_blocos);
+            printf("Numero de semanas: ");
+            scanf("%d", &num_semanas);
+            inserirCurso(&arvoreCursos, criarNoCurso(cod_curso, nome_curso, qtd_blocos, num_semanas));
             break;
             
         case 2:
-            
+            printf("Digite o codigo do curso: ");
+            scanf("%d", &cod_curso);
+            aux = buscarCursoPorCodigo(arvoreCursos, cod_curso);
+            if (aux != NULL) {
+                printf("Digite o codigo da disciplina: ");
+                scanf("%d", &cod_disc);
+                printf("Nome da disciplina: ");
+                scanf("%s", nome_dis);
+                printf("Bloco da disciplina: ");
+                scanf("%d", bloco_dis);
+                printf("Carga hoararia da disciplina: ");
+                scanf("%d", carga_horaria);
+                inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(cod_disc, nome_dis, bloco_dis, carga_horaria));
+            } else {
+                printf("Curso nao encontrado :/");
+            }
             break;
 
         case 3:
@@ -171,6 +148,5 @@ int main() {
             break;
         }
     }
-
     return 0;
 }

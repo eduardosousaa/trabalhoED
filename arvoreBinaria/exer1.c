@@ -5,7 +5,6 @@
 
 #include "exer1.h"
 
-
 Disciplina *criarNoDisciplina(int codigo, char nome[], int bloco, int carga) {
     // Essa funcao recebe os parametros: codigo:inteiro, nome:string, bloco:inteiro e carga:inteiro.
     // Ela vai alocar um espaco de memoria para a disciplina, em seguida atribuir os valores passados 
