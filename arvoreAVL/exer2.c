@@ -54,10 +54,11 @@ Curso *criarNoCurso(int codigo, char nome_curso[], int quantidade_blocos, int nu
 
 // Função para calcular a altura de um nó
 int calclrAltr(Curso *no) {
-    if (no == NULL) {
-        return -1;
+    int i = -1;
+    if (no != NULL) {
+        i = no->altura;
     }
-    return no->altura;
+    return i;
 }
 
 // Função para atualizar a altura de um nó
@@ -69,12 +70,13 @@ void atlzrAltr(Curso *no) {
 
 // Função para calcular o fator de balanceamento de um nó
 int calclrFatrBalncmnt(Curso *no) {
-    if (no == NULL) {
-        return 0;
+    int i = 0;
+    if (no != NULL) {
+        int altura_esq = calclrAltr(no->esq);
+        int altura_dir = calclrAltr(no->dir);
+        i = ((altura_esq) - (altura_dir));
     }
-    int altura_esq = calclrAltr(no->esq);
-    int altura_dir = calclrAltr(no->dir);
-    return ((altura_esq) - (altura_dir));
+    return i;
 }
 
 void rotDirt(Curso **raiz){
@@ -158,6 +160,7 @@ Curso *enderecoFilho(Curso *raiz) {
 }
 
 void removerCurso(Curso **raiz, int codigo){
+    int valorBalan;
     if (*raiz != NULL){
         Curso *aux;
         if((*raiz)->codigo_curso == codigo){
@@ -191,7 +194,112 @@ void removerCurso(Curso **raiz, int codigo){
         else {
             removerCurso(&(*raiz)->dir,codigo);
         }
-    calclrFatrBalncmnt(*raiz);
+    // Se estiver desbalanceado, vai ser feito o balanceamento da árvore.
+    valorBalan = calclrFatrBalncmnt(*raiz);
+    if (valorBalan == 2){
+        if (calclrFatrBalncmnt((*raiz)->esq) == -1){
+            rotEsqrd(&((*raiz)->esq));
+        }
+        rotDirt((raiz));
+        
+    } else if (valorBalan == 2){
+        if (calclrFatrBalncmnt((*raiz)->esq) == -2){
+            rotDirt(&((*raiz)->dir));
+        }
+        rotEsqrd((raiz));
+        
+    }
+    // Vai atualizar a altura.
     atlzrAltr(*raiz);
+    }
+}
+
+// Usada para encontrar a folha mais à direita em uma subárvore
+// Até encontrar o último nó à direita e atribuindo o novo nó folha a esse local.
+void buscarfolha(Disciplina **ultimo, Disciplina *filho){
+    if(*ultimo){
+        buscarfolha(&((*ultimo)->dir), filho);
+    }
+    else {
+        (*ultimo) = filho;
+    }
+}
+
+
+void removerDisciplina(Disciplina **raiz,int codigo){
+    if (*raiz != NULL){
+        Disciplina *aux;
+        if((*raiz)->codigo_disciplina == codigo){
+            // Se o nó não tem filhos
+            if((*raiz)->esq == NULL && (*raiz)->dir == NULL){
+                free(*raiz);
+                (*raiz) = NULL;
+            }
+            // Se o nó tem apenas um filho
+            else if((*raiz)->esq == NULL || (*raiz)->dir == NULL){
+                Disciplina *endFilho;
+                if((*raiz)->esq != NULL){
+                    aux = *raiz;
+                    endFilho = (*raiz)->esq;
+                    *raiz = endFilho;
+                    free(aux);
+                    aux = NULL;
+                }
+                else{
+                    aux = *raiz;
+                    endFilho = (*raiz)->dir;
+                    *raiz = endFilho;
+                    free(aux);
+                    aux = NULL;
+                }
+            }
+            else{
+                Disciplina *filho;
+                aux = *raiz;
+                filho = (*raiz)->esq;
+                // encontrar o nó folha mais à direita da subárvore esquerda, que será movido para o lugar do nó a ser removido.
+                buscarfolha(&((*raiz)->esq), (*raiz)->dir);
+                *raiz = filho;
+                free(aux);      
+                aux = NULL;          
+            }
+        }
+        else if (codigo < (*raiz)->codigo_disciplina){
+            removerDisciplina(&(*raiz)->esq,codigo);
+        }
+        else {
+            removerDisciplina(&(*raiz)->dir,codigo);
+        }
+    // Se estiver desbalanceado, vai ser feito o balanceamento da árvore.
+    valorBalan = calclrFatrBalncmnt(*raiz);
+    if (valorBalan == 2){
+        if (calclrFatrBalncmnt((*raiz)->esq) == -1){
+            rotEsqrd(&((*raiz)->esq));
+        }
+        rotDirt((raiz));
+        
+    } else if (valorBalan == 2){
+        if (calclrFatrBalncmnt((*raiz)->esq) == -2){
+            rotDirt(&((*raiz)->dir));
+        }
+        rotEsqrd((raiz));
+        
+    }
+    // Vai atualizar a altura.
+    atlzrAltr(*raiz);
+    }
+}
+
+void buscarCursoParaRemover(Curso **raiz, int codigo_disciplina, int codigo){
+    if (*raiz != NULL){
+        if ((*raiz)->codigo_curso == codigo){
+            removerDisciplina(&(*raiz)->arvoreDisciplina, codigo_disciplina);
+        }
+        else if (codigo < (*raiz)->codigo_curso){
+            buscarCursoParaRemover(&(*raiz)->esq, codigo_disciplina, codigo);
+        }
+        else {
+            buscarCursoParaRemover(&(*raiz)->dir, codigo_disciplina, codigo);
+        }
     }
 }

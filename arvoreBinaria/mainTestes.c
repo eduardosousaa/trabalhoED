@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include <windows.h>
 
 #include "exer1.h"
 
 int main() {
-    srand(time(NULL));
+    // srand(time(NULL));
 
     Curso  *arvoreCursos;
     arvoreCursos = NULL;
