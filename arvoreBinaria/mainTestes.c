@@ -55,10 +55,13 @@ int main() {
 
     //Criação das árvores com as inserções embaralhadas
     for (int i = 0; i < num_cursos; i++) {
-        int numero = sortearNumero();
-        int numero2 = sortearNumero();
-        inserirCurso(&arvoreCursos, criarNoCurso(codigos[i], "A", numero, numero2));
+        int qtd_blocos = sortearNumero();
+        int num_semanas = sortearNumero();
+        // char nome_curso[50];
+        // sprintf(nome_curso, "Curso %d", i + 1);
+        inserirCurso(&arvoreCursos, criarNoCurso(codigos[i], "A", qtd_blocos, num_semanas));
     }
+
     // Obtém o tempo final
     QueryPerformanceCounter(&fim);
 
