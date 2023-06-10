@@ -19,7 +19,12 @@ void embaralhar(int *array, int tamanho);
 int sortearNumero();
 
 Disciplina *criarNoDisciplina(int codigo, char nome[], int bloco, int carga);
-void inserirDisciplina(Disciplina **raiz, Disciplina *noDis);
+int calclrAltrDis(Disciplina *no);
+void atlzrAltrDis(Disciplina *no);
+int calclrFatrBalncmntDis(Disciplina *no);
+void rotDirtDis(Disciplina **raiz);
+void rotEsqrdDis(Disciplina **raiz);
+void inserirDis(Disciplina **raiz, Disciplina *no);
 void imprimirDisciplinas(Disciplina *raiz);
 int imprimirDisciplinasPorCodigoCurso(Curso *raiz, int codigo_curso);
 void procuraDisciplina(Disciplina *disciplina, int codigo_disciplina);
@@ -33,7 +38,12 @@ void removerDisciplina(Disciplina **raiz,int codigo);
 void buscarCursoParaRemover(Curso **raiz, int codigo_disciplina, int codigo);
 
 Curso *criarNoCurso(int codigo, char nome_curso[], int quantidade_blocos, int num_semanas);
-void inserirCurso(Curso **raiz, Curso *curso);
+int calclrAltr(Curso *no);
+void atlzrAltr(Curso *no);
+int calclrFatrBalncmnt(Curso *no);
+void rotDirt(Curso **raiz);
+void rotEsqrd(Curso **raiz);
+void insrrCurs(Curso **raiz, Curso *No);
 Curso *buscarCursoPorCodigo(Curso *raiz, int codigo);
 void imprimirCursos(Curso *raiz);
 void imprimirCursoPeloCodigo(Curso *raiz, int codigo_curso);
