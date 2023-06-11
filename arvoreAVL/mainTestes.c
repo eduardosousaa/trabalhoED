@@ -21,32 +21,28 @@ int main() {
     // Obtém o tempo inicial
     QueryPerformanceCounter(&inicio);
 
-    // printf("Entrou");
+    //Vetor com os códigos dos cursos
+    int codigos[200];
 
-    // Exemplo de inserção de cursos e disciplinas
-    insrrCurs(&arvoreCursos, criarNoCurso(80, "Ciencia da Computacao", 20, 25));
-    insrrCurs(&arvoreCursos, criarNoCurso(10, "Engenharia", 15, 20));
-    insrrCurs(&arvoreCursos, criarNoCurso(50, "Direito", 20, 30));
-    insrrCurs(&arvoreCursos, criarNoCurso(200, "Artes", 20, 30));
-    insrrCurs(&arvoreCursos, criarNoCurso(20, "Sistemas de Informacao", 15, 20));
-    insrrCurs(&arvoreCursos, criarNoCurso(70, "Engenharia Civil", 16, 22));
-    insrrCurs(&arvoreCursos, criarNoCurso(140, "Quimica", 18, 22));
-    insrrCurs(&arvoreCursos, criarNoCurso(160, "Historia", 16, 20));
-    insrrCurs(&arvoreCursos, criarNoCurso(40, "Administracao", 18, 25));
-    insrrCurs(&arvoreCursos, criarNoCurso(60, "Psicologia", 15, 22));
-    insrrCurs(&arvoreCursos, criarNoCurso(120, "Letras", 12, 18));
-    insrrCurs(&arvoreCursos, criarNoCurso(100, "Biologia", 16, 20));
-    insrrCurs(&arvoreCursos, criarNoCurso(90, "Arquitetura", 18, 20));
-    insrrCurs(&arvoreCursos, criarNoCurso(110, "Economia", 15, 24));
-    insrrCurs(&arvoreCursos, criarNoCurso(130, "Fisica", 15, 20));
-    insrrCurs(&arvoreCursos, criarNoCurso(30, "Medicina", 20, 20));
-    insrrCurs(&arvoreCursos, criarNoCurso(150, "Matematica", 20, 25));
-    insrrCurs(&arvoreCursos, criarNoCurso(170, "Geografia", 15, 20));
-    insrrCurs(&arvoreCursos, criarNoCurso(190, "Sociologia", 16, 22));
-    insrrCurs(&arvoreCursos, criarNoCurso(180, "Filosofia", 12, 18));
+    for (int i = 0; i < 200; i++) {
+        codigos[i] = 10 + (i * 10);
+    }
 
-    // printf("Saiu");
+    int num_cursos = sizeof(codigos) / sizeof(codigos[0]);
 
+    // Embaralha os códigos dos cursos
+    embaralhar(codigos, num_cursos);
+
+
+    //Criação das árvores com as inserções embaralhadas
+    for (int i = 0; i < num_cursos; i++) {
+        int qtd_blocos = sortearNumero();
+        int num_semanas = qtd_blocos;
+        char nome_curso[50];
+        sprintf(nome_curso, "Curso %d", i + 1);
+        insrrCurs(&arvoreCursos, criarNoCurso(codigos[i], nome_curso, qtd_blocos, num_semanas));
+    }
+    
     // Obtém o tempo final
     QueryPerformanceCounter(&fim);
 
@@ -54,30 +50,34 @@ int main() {
     tempo_total = (double)(fim.QuadPart - inicio.QuadPart) / frequencia.QuadPart * 1000;
 
     // Exibe o tempo total de preenchimento da árvore
-    printf("Tempo total: %.9f milissegundos\n", tempo_total);
-
-    // imprimirCursos(arvoreCursos);
-
-    // removerCurso(&arvoreCursos, 200);
+    printf("Tempo total: %.5f milissegundos\n", tempo_total);
 
     // imprimirCursos(arvoreCursos);
 
     // aux = buscarCursoPorCodigo(arvoreCursos, 20);
 
-    // printf("Entrou \n");
-    // inserirDis(&aux->arvoreDisciplina, criarNoDisciplina(1, "ED1", 6, 60));
-    // inserirDis(&aux->arvoreDisciplina, criarNoDisciplina(2, "ED2", 6, 60));
-    // inserirDis(&aux->arvoreDisciplina, criarNoDisciplina(3, "PAA", 4, 50));
-    // inserirDis(&aux->arvoreDisciplina, criarNoDisciplina(4, "TCC1", 4, 50));
-    // printf("Saiu \n");
     
-    
-    // imprimirDisciplinas(aux->arvoreDisciplina);
-
-    // buscarCursoParaRemover(&arvoreCursos, 2, 20);
-
-    // imprimirDisciplinas(aux->arvoreDisciplina);
-
+    // Exemplo de inserção de cursos e disciplinas
+    // insrrCurs(&arvoreCursos, criarNoCurso(80, "Ciencia da Computacao", 20, 25));
+    // insrrCurs(&arvoreCursos, criarNoCurso(10, "Engenharia", 15, 20));
+    // insrrCurs(&arvoreCursos, criarNoCurso(50, "Direito", 20, 30));
+    // insrrCurs(&arvoreCursos, criarNoCurso(200, "Artes", 20, 30));
+    // insrrCurs(&arvoreCursos, criarNoCurso(20, "Sistemas de Informacao", 15, 20));
+    // insrrCurs(&arvoreCursos, criarNoCurso(70, "Engenharia Civil", 16, 22));
+    // insrrCurs(&arvoreCursos, criarNoCurso(140, "Quimica", 18, 22));
+    // insrrCurs(&arvoreCursos, criarNoCurso(160, "Historia", 16, 20));
+    // insrrCurs(&arvoreCursos, criarNoCurso(40, "Administracao", 18, 25));
+    // insrrCurs(&arvoreCursos, criarNoCurso(60, "Psicologia", 15, 22));
+    // insrrCurs(&arvoreCursos, criarNoCurso(120, "Letras", 12, 18));
+    // insrrCurs(&arvoreCursos, criarNoCurso(100, "Biologia", 16, 20));
+    // insrrCurs(&arvoreCursos, criarNoCurso(90, "Arquitetura", 18, 20));
+    // insrrCurs(&arvoreCursos, criarNoCurso(110, "Economia", 15, 24));
+    // insrrCurs(&arvoreCursos, criarNoCurso(130, "Fisica", 15, 20));
+    // insrrCurs(&arvoreCursos, criarNoCurso(30, "Medicina", 20, 20));
+    // insrrCurs(&arvoreCursos, criarNoCurso(150, "Matematica", 20, 25));
+    // insrrCurs(&arvoreCursos, criarNoCurso(170, "Geografia", 15, 20));
+    // insrrCurs(&arvoreCursos, criarNoCurso(190, "Sociologia", 16, 22));
+    // insrrCurs(&arvoreCursos, criarNoCurso(180, "Filosofia", 12, 18));
 
     return 0;
 }
