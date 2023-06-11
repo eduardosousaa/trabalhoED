@@ -3,17 +3,19 @@ typedef struct disciplina {
     char nome_disciplina[50];
     int bloco;
     int carga_horaria;
+    int altura; // Novo membro para balanceamento da árvore
     struct disciplina *esq, *dir;
-}Disciplina;
+} Disciplina;
 
 typedef struct curso {
     int codigo_curso;
     char nome_curso[50];
     int quantidade_blocos;
     int num_semanas;
+    int altura; // Novo membro para balanceamento da árvore
     struct disciplina *arvoreDisciplina;
     struct curso *esq, *dir;
-}Curso;
+} Curso;
 
 void embaralhar(int *array, int tamanho);
 int sortearNumero();

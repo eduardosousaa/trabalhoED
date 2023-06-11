@@ -103,7 +103,7 @@ int main() {
         case 7:
             // (5)Imprimir os dados de uma disciplina dado o código dela e do curso ao qual ela pertence;
             printf("Digite o codigo da disciplina: ");
-            scanf("%d\n", &cod_disc);
+            scanf("%d", &cod_disc);
             printf("Digite o codigo do curso: ");
             scanf("%d", &cod_curso);
             imprimirDadosDisciplinasDadoCodigoCurso(arvoreCursos, cod_curso, cod_disc);
@@ -112,7 +112,7 @@ int main() {
         case 8:
             // 6)Imprimir as disciplinas de um determinado bloco de um curso, dado o bloco e o código do curso;
             printf("Digite o bloco do curso: ");
-            scanf("%d\n", &bloco_curso);
+            scanf("%d", &bloco_curso);
             printf("Digite o codigo do curso: ");
             scanf("%d", &cod_curso);
             imprimirDisciplinasBloco(arvoreCursos, bloco_curso, cod_curso); 
@@ -121,7 +121,7 @@ int main() {
         case 9:
             // (7) Imprimir todas as disciplinas de um determinado curso com a mesma carga horária, onde o código do curso e a carga horária devem ser informadas pelo usuário;
             printf("Digite o codigo do curso: ");
-            scanf("%d\n", &cod_curso);
+            scanf("%d", &cod_curso);
             printf("Digite a carga horaria: ");
             scanf("%d", &carga_horaria);
             imprimirDisCargaHoraria(arvoreCursos, cod_curso, carga_horaria); 
@@ -130,7 +130,7 @@ int main() {
         case 10:
             // (8) Excluir uma disciplina dado o código da disciplina e o código do curso;
             printf("Digite o codigo da disciplina: ");
-            scanf("%d\n", &cod_disc);
+            scanf("%d", &cod_disc);
             printf("Digite o codigo do curso: ");
             scanf("%d", &cod_curso);
             buscarCursoParaRemover(&arvoreCursos, cod_disc, cod_curso);

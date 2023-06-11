@@ -62,23 +62,21 @@ int main() {
 
     // imprimirCursos(arvoreCursos);
 
-    aux = buscarCursoPorCodigo(arvoreCursos, 20);
+    // aux = buscarCursoPorCodigo(arvoreCursos, 20);
 
-    if (aux != NULL){
-        printf("Entrou \n");
-        inserirDis(&aux->arvoreDisciplina, criarNoDisciplina(1, "ED1", 6, 60));
-        inserirDis(&aux->arvoreDisciplina, criarNoDisciplina(2, "ED2", 6, 60));
-        inserirDis(&aux->arvoreDisciplina, criarNoDisciplina(3, "PAA", 4, 50));
-        inserirDis(&aux->arvoreDisciplina, criarNoDisciplina(4, "TCC1", 4, 50));
-        printf("Saiu \n");
-    }
+    // printf("Entrou \n");
+    // inserirDis(&aux->arvoreDisciplina, criarNoDisciplina(1, "ED1", 6, 60));
+    // inserirDis(&aux->arvoreDisciplina, criarNoDisciplina(2, "ED2", 6, 60));
+    // inserirDis(&aux->arvoreDisciplina, criarNoDisciplina(3, "PAA", 4, 50));
+    // inserirDis(&aux->arvoreDisciplina, criarNoDisciplina(4, "TCC1", 4, 50));
+    // printf("Saiu \n");
     
     
-    imprimirDisciplinas(arvoreCursos->arvoreDisciplina);
+    // imprimirDisciplinas(aux->arvoreDisciplina);
 
-    buscarCursoParaRemover(&arvoreCursos, 2, 20);
+    // buscarCursoParaRemover(&arvoreCursos, 2, 20);
 
-    imprimirDisciplinas(arvoreCursos->arvoreDisciplina);
+    // imprimirDisciplinas(aux->arvoreDisciplina);
 
 
     return 0;

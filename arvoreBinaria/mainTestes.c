@@ -17,6 +17,12 @@ int main() {
     LARGE_INTEGER inicio, fim, frequencia;
     double tempo_total;
 
+     // Obtém a frequência do contador de performance
+    QueryPerformanceFrequency(&frequencia); 
+
+    // Obtém o tempo inicial
+    QueryPerformanceCounter(&inicio);
+
     // Exemplo de inserção de cursos e disciplinas
     inserirCurso(&arvoreCursos, criarNoCurso(10, "Engenharia", 15, 20));
     inserirCurso(&arvoreCursos, criarNoCurso(80, "Ciência da Computação", 20, 25));
@@ -39,6 +45,15 @@ int main() {
     inserirCurso(&arvoreCursos, criarNoCurso(190, "Sociologia", 16, 22));
     inserirCurso(&arvoreCursos, criarNoCurso(180, "Filosofia", 12, 18));
 
+    // Obtém o tempo final
+    QueryPerformanceCounter(&fim);
+
+    // Calcula o tempo total em milissegundos
+    tempo_total = (double)(fim.QuadPart - inicio.QuadPart) / frequencia.QuadPart * 1000;
+
+    // Exibe o tempo total de preenchimento da árvore
+    printf("Tempo total: %.9f milissegundos\n", tempo_total);
+
     /*
     //Vetor com os códigos dos cursos
     int codigos[] = {10, 80, 50, 200, 20, 70, 140, 160, 40, 60, 120, 100, 90, 110, 130, 30, 150, 170, 190, 180};
@@ -47,11 +62,6 @@ int main() {
     // Embaralha os códigos dos cursos
     embaralhar(codigos, num_cursos);
 
-    // Obtém a frequência do contador de performance
-    QueryPerformanceFrequency(&frequencia); 
-
-    // Obtém o tempo inicial
-    QueryPerformanceCounter(&inicio);
 
     //Criação das árvores com as inserções embaralhadas
     for (int i = 0; i < num_cursos; i++) {
@@ -61,34 +71,25 @@ int main() {
         sprintf(nome_curso, "Curso %d", i + 1);
         inserirCurso(&arvoreCursos, criarNoCurso(codigos[i], nome_curso, qtd_blocos, num_semanas));
     }
-
-    // Obtém o tempo final
-    QueryPerformanceCounter(&fim);
-
-    // Calcula o tempo total em milissegundos
-    tempo_total = (double)(fim.QuadPart - inicio.QuadPart) / frequencia.QuadPart * 1000;
-
-    // Exibe o tempo total de preenchimento da árvore
-    printf("Tempo total: %.9f milissegundos\n", tempo_total);
     */
 
-    imprimirCursos(arvoreCursos);
+    // imprimirCursos(arvoreCursos);
 
     
-    aux = buscarCursoPorCodigo(arvoreCursos, 20);
-    printf("%s\n", aux->nome_curso);
+    // aux = buscarCursoPorCodigo(arvoreCursos, 20);
+    // printf("%s\n", aux->nome_curso);
     // aux = buscarCursoPorCodigo(arvoreCursos, 20);
     // printf("%s\n", aux->nome_curso);
     // aux2 = buscarCursoPorCodigo(arvoreCursos, 30);
 
-    printf("Entrou\n");
-    inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(1, "ED1", 6, 60));
-    inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(2, "ED2", 6, 60));
-    inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(3, "PAA", 4, 50));
-    inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(4, "TCC1", 4, 50));
-    printf("Saiu\n");
+    // printf("Entrou\n");
+    // inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(1, "ED1", 6, 60));
+    // inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(2, "ED2", 6, 60));
+    // inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(3, "PAA", 4, 50));
+    // inserirDisciplina(&aux->arvoreDisciplina, criarNoDisciplina(4, "TCC1", 4, 50));
+    // printf("Saiu\n");
 
-    imprimirDisciplinas(aux->arvoreDisciplina);
+    // imprimirDisciplinas(aux->arvoreDisciplina);
     /*
     aux2 = buscarCursoPorCodigo(arvoreCursos, 10);
     inserirDisciplina(&aux2->arvoreDisciplina, criarNoDisciplina(12, "Anatomia", 6, 60));
