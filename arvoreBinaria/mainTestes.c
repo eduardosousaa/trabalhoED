@@ -24,9 +24,9 @@ int main() {
     QueryPerformanceCounter(&inicio);
 
     //Vetor com os códigos dos cursos
-    int codigos[200];
+    int codigos[50000];
 
-    for (int i = 0; i < 200; i++) {
+    for (int i = 0; i < 50000; i++) {
         codigos[i] = 10 + (i * 10);
     }
 
