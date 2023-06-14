@@ -455,7 +455,7 @@ void imprimirCursos(Curso *raiz) {
 void imprimirCursoPeloCodigo(Curso *raiz, int codigo_curso) {
     if (raiz != NULL){
         if (raiz->codigo_curso == codigo_curso){
-             printf("\nDados do curso:\nCodigo: %d\nNome: %s\nQuantidade de blocos: %d\nNumero de semanas: %d\n\n", raiz->codigo_curso, raiz->nome_curso, raiz->quantidade_blocos, raiz->num_semanas);
+            //  printf("\nDados do curso:\nCodigo: %d\nNome: %s\nQuantidade de blocos: %d\nNumero de semanas: %d\n\n", raiz->codigo_curso, raiz->nome_curso, raiz->quantidade_blocos, raiz->num_semanas);
         } else {
             if (codigo_curso < raiz->codigo_curso){
                 imprimirCursoPeloCodigo(raiz->esq, codigo_curso);

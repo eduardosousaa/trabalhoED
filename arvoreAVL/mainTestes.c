@@ -6,6 +6,7 @@
 #include "exer2.h"
 
 #define TAM 100000
+#define TAM2 75000
 
 void lerArquivo(int vetor[]){
     FILE *arquivo;
@@ -38,34 +39,9 @@ int main(){
 
     LARGE_INTEGER inicio, fim, frequencia;
     double tempo_total = 0.0;
+    double tempo_total2 = 0.0;
 
     // Obtém a frequência do contador de performance
-    QueryPerformanceFrequency(&frequencia); 
-
-    for (int i = 0; i < 30; i++){
-        // Obtém o tempo inicial
-        QueryPerformanceCounter(&inicio);
-
-        imprimirCursoPeloCodigo(arvoreCursos, 291460);
-        
-        // Obtém o tempo final
-        QueryPerformanceCounter(&fim);
-
-        // Calcula o tempo total em milissegundos
-        double tempo_busca = (double)(fim.QuadPart - inicio.QuadPart) / frequencia.QuadPart * 1000;
-
-        tempo_total += tempo_busca;
-    }
-
-    // Calcula a média do tempo de inserção
-    double media_tempo_busca = tempo_total / 30;
-
-    // Exibe o tempo médio de preenchimento da árvore
-    printf("Tempo medio: %.5f milissegundos\n", media_tempo_busca);
-
-    /*
-
-     // Obtém a frequência do contador de performance
     QueryPerformanceFrequency(&frequencia); 
 
     // Realiza as inserções 30 vezes
@@ -99,7 +75,27 @@ int main(){
 
     // Exibe o tempo médio de preenchimento da árvore
     printf("Tempo medio: %.5f milissegundos\n", media_tempo_insercao);
-    */
+    
+    for (int i = 0; i < 30; i++){
+        // Obtém o tempo inicial
+        QueryPerformanceCounter(&inicio);
+
+        imprimirCursoPeloCodigo(arvoreCursos, 610240);
+        
+        // Obtém o tempo final
+        QueryPerformanceCounter(&fim);
+
+        // Calcula o tempo total em milissegundos
+        double tempo_busca = (double)(fim.QuadPart - inicio.QuadPart) / frequencia.QuadPart * 1000;
+
+        tempo_total2 += tempo_busca;
+    }
+
+    // Calcula a média do tempo de inserção
+    double media_tempo_busca = tempo_total2 / 30;
+
+    // Exibe o tempo médio de preenchimento da árvore
+    printf("Tempo medio: %.5f milissegundos\n", media_tempo_busca);
     return 0;
 }
 
