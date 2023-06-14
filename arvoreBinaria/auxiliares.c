@@ -16,6 +16,7 @@ void embaralhar(int *array, int tamanho) {
     }
 }
 
+
 int sortearNumero() {
     // Array com os números disponíveis
     int numeros[] = {12, 15, 20, 22, 25, 30};

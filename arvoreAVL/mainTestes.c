@@ -5,7 +5,31 @@
 
 #include "exer2.h"
 
-int main() {
+#define TAM 100000
+
+void lerArquivo(int vetor[]){
+    FILE *arquivo;
+    int contador = 0;
+    int numero;
+
+    // Abrir o arquivo para leitura
+    arquivo = fopen("arquivo2.txt", "r");
+
+    // Verificar se o arquivo foi aberto corretamente
+    if (arquivo == NULL)
+        printf("Erro ao abrir o arquivo.\n");
+    // Ler cada número do arquivo e armazená-lo no vetor
+    while (fscanf(arquivo, "%d", &numero) != EOF) {
+        vetor[contador] = numero;
+        contador++;
+    }
+    // Fechar o arquivo
+    fclose(arquivo);
+}
+
+int main(){
+    int vetor[TAM];
+
     Curso  *arvoreCursos;
     arvoreCursos = NULL;
 
@@ -13,72 +37,70 @@ int main() {
     aux = NULL;
 
     LARGE_INTEGER inicio, fim, frequencia;
-    double tempo_total;
+    double tempo_total = 0.0;
 
     // Obtém a frequência do contador de performance
     QueryPerformanceFrequency(&frequencia); 
 
-    // Obtém o tempo inicial
-    QueryPerformanceCounter(&inicio);
+    for (int i = 0; i < 30; i++){
+        // Obtém o tempo inicial
+        QueryPerformanceCounter(&inicio);
 
-    //Vetor com os códigos dos cursos
-    int codigos[50000];
+        imprimirCursoPeloCodigo(arvoreCursos, 291460);
+        
+        // Obtém o tempo final
+        QueryPerformanceCounter(&fim);
 
-    for (int i = 0; i < 50000; i++) {
-        codigos[i] = 10 + (i * 10);
+        // Calcula o tempo total em milissegundos
+        double tempo_busca = (double)(fim.QuadPart - inicio.QuadPart) / frequencia.QuadPart * 1000;
+
+        tempo_total += tempo_busca;
     }
 
-    int num_cursos = sizeof(codigos) / sizeof(codigos[0]);
+    // Calcula a média do tempo de inserção
+    double media_tempo_busca = tempo_total / 30;
 
-    // Embaralha os códigos dos cursos
-    embaralhar(codigos, num_cursos);
+    // Exibe o tempo médio de preenchimento da árvore
+    printf("Tempo medio: %.5f milissegundos\n", media_tempo_busca);
 
+    /*
 
-    //Criação das árvores com as inserções embaralhadas
-    for (int i = 0; i < num_cursos; i++) {
-        int qtd_blocos = sortearNumero();
-        int num_semanas = qtd_blocos;
-        char nome_curso[50];
-        sprintf(nome_curso, "Curso %d", i + 1);
-        insrrCurs(&arvoreCursos, criarNoCurso(codigos[i], nome_curso, qtd_blocos, num_semanas));
+     // Obtém a frequência do contador de performance
+    QueryPerformanceFrequency(&frequencia); 
+
+    // Realiza as inserções 30 vezes
+    for (int j = 0; j < 30; j++) {
+
+        // Obtém o tempo inicial
+        QueryPerformanceCounter(&inicio);
+
+        lerArquivo(vetor);
+
+        //Criação das árvores com as inserções embaralhadas
+        for (int i = 0; i < TAM; i++) {
+            int qtd_blocos = sortearNumero();
+            int num_semanas = qtd_blocos;
+            char nome_curso[50];
+            sprintf(nome_curso, "Curso %d", i + 1);
+            insrrCurs(&arvoreCursos, criarNoCurso(vetor[i], nome_curso, qtd_blocos, num_semanas));
+        }
+
+        // Obtém o tempo final
+        QueryPerformanceCounter(&fim);
+
+        // Calcula o tempo total em milissegundos
+        double tempo_insercao = (double)(fim.QuadPart - inicio.QuadPart) / frequencia.QuadPart * 1000;
+
+        tempo_total += tempo_insercao;
     }
-    
-    // Obtém o tempo final
-    QueryPerformanceCounter(&fim);
 
-    // Calcula o tempo total em milissegundos
-    tempo_total = (double)(fim.QuadPart - inicio.QuadPart) / frequencia.QuadPart * 1000;
+    // Calcula a média do tempo de inserção
+    double media_tempo_insercao = tempo_total / 30;
 
-    // Exibe o tempo total de preenchimento da árvore
-    printf("Tempo total: %.5f milissegundos\n", tempo_total);
-
-    // imprimirCursos(arvoreCursos);
-
-    // aux = buscarCursoPorCodigo(arvoreCursos, 20);
-
-    
-    // Exemplo de inserção de cursos e disciplinas
-    // insrrCurs(&arvoreCursos, criarNoCurso(80, "Ciencia da Computacao", 20, 25));
-    // insrrCurs(&arvoreCursos, criarNoCurso(10, "Engenharia", 15, 20));
-    // insrrCurs(&arvoreCursos, criarNoCurso(50, "Direito", 20, 30));
-    // insrrCurs(&arvoreCursos, criarNoCurso(200, "Artes", 20, 30));
-    // insrrCurs(&arvoreCursos, criarNoCurso(20, "Sistemas de Informacao", 15, 20));
-    // insrrCurs(&arvoreCursos, criarNoCurso(70, "Engenharia Civil", 16, 22));
-    // insrrCurs(&arvoreCursos, criarNoCurso(140, "Quimica", 18, 22));
-    // insrrCurs(&arvoreCursos, criarNoCurso(160, "Historia", 16, 20));
-    // insrrCurs(&arvoreCursos, criarNoCurso(40, "Administracao", 18, 25));
-    // insrrCurs(&arvoreCursos, criarNoCurso(60, "Psicologia", 15, 22));
-    // insrrCurs(&arvoreCursos, criarNoCurso(120, "Letras", 12, 18));
-    // insrrCurs(&arvoreCursos, criarNoCurso(100, "Biologia", 16, 20));
-    // insrrCurs(&arvoreCursos, criarNoCurso(90, "Arquitetura", 18, 20));
-    // insrrCurs(&arvoreCursos, criarNoCurso(110, "Economia", 15, 24));
-    // insrrCurs(&arvoreCursos, criarNoCurso(130, "Fisica", 15, 20));
-    // insrrCurs(&arvoreCursos, criarNoCurso(30, "Medicina", 20, 20));
-    // insrrCurs(&arvoreCursos, criarNoCurso(150, "Matematica", 20, 25));
-    // insrrCurs(&arvoreCursos, criarNoCurso(170, "Geografia", 15, 20));
-    // insrrCurs(&arvoreCursos, criarNoCurso(190, "Sociologia", 16, 22));
-    // insrrCurs(&arvoreCursos, criarNoCurso(180, "Filosofia", 12, 18));
-
+    // Exibe o tempo médio de preenchimento da árvore
+    printf("Tempo medio: %.5f milissegundos\n", media_tempo_insercao);
+    */
     return 0;
 }
+
 
