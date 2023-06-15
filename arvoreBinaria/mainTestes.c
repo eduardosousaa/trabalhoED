@@ -5,7 +5,7 @@
 
 #include "exer1.h"
 
-#define TAM 100000
+#define TAM 1000
 #define TAM2 75000
 
 void lerArquivo(int vetor[]){
@@ -14,7 +14,7 @@ void lerArquivo(int vetor[]){
     int numero;
 
     // Abrir o arquivo para leitura
-    arquivo = fopen("arquivo2.txt", "r");
+    arquivo = fopen("arquivo_ordenado.txt", "r");
 
     // Verificar se o arquivo foi aberto corretamente
     if (arquivo == NULL)
@@ -78,7 +78,7 @@ int main(){
         // Obtém o tempo inicial
         QueryPerformanceCounter(&inicio);
 
-        imprimirCursoPeloCodigo(arvoreCursos, 610240);
+        imprimirCursoPeloCodigo(arvoreCursos, 567); //610240
         
         // Obtém o tempo final
         QueryPerformanceCounter(&fim);
