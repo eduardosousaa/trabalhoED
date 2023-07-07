@@ -7,7 +7,7 @@ typedef struct lista{
 // Info vai conter a palavra e a lista de números das linha
 typedef struct info{
     char *palavra;
-    lista *num_lista;
+    Lista *num_lista;
 }Info;
 
 typedef struct arvRubroNegra{

@@ -32,7 +32,7 @@ void inserirLinha(Lista **no, int num_linha, int inseriu[]){
         }
         
     } else {
-        inserirLinha(&((*no)->prox), num_linha, inseriu)
+        inserirLinha(&((*no)->prox), num_linha, inseriu);
     }
     
 }
