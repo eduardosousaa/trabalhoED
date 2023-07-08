@@ -447,7 +447,7 @@ Curso *buscarCursoPorCodigo(Curso *raiz, int codigo) {
 void imprimirCursos(Curso *raiz) {
     if (raiz != NULL) {
         imprimirCursos(raiz->esq);
-        printf("\nDados do curso:\nCodigo: %d\nNome: %s\nQuantidade de blocos: %d\nNumero de semanas: %d\n\n", raiz->codigo_curso, raiz->nome_curso, raiz->quantidade_blocos, raiz->num_semanas);
+        // printf("\nDados do curso:\nCodigo: %d\nNome: %s\nQuantidade de blocos: %d\nNumero de semanas: %d\n\n", raiz->codigo_curso, raiz->nome_curso, raiz->quantidade_blocos, raiz->num_semanas);
         imprimirCursos(raiz->dir);
     }
 }

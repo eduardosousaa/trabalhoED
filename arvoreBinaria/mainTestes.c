@@ -3,15 +3,10 @@
 #include <string.h>
 #include <windows.h>
 
-#include "exer2.h"
+#include "exer1.h"
 
-<<<<<<< Updated upstream:proj1/arvoreAVL/mainTestes.c
+#define TAMVET 750
 #define TAM 1000
-#define TAM2 75000
-=======
-#define TAMVET 1000
-#define TAM 1000
->>>>>>> Stashed changes:arvoreAVL/mainTestes.c
 
 void lerArquivo(int vetor[])
 {
@@ -42,19 +37,11 @@ int main()
     Curso *arvoreCursos;
     arvoreCursos = NULL;
 
-    Curso *aux;
-    aux = NULL;
-
     LARGE_INTEGER inicio, fim, frequencia;
     double tempo_total = 0.0;
-    double tempo_total2 = 0.0;
 
     // Obtém a frequência do contador de performance
-<<<<<<< Updated upstream:proj1/arvoreAVL/mainTestes.c
-    QueryPerformanceFrequency(&frequencia); 
-=======
     QueryPerformanceFrequency(&frequencia);
->>>>>>> Stashed changes:arvoreAVL/mainTestes.c
 
     // Realiza as inserções 30 vezes
     // for (int j = 0; j < 30; j++) {
@@ -65,13 +52,14 @@ int main()
     lerArquivo(vetor);
 
     // Criação das árvores com as inserções embaralhadas
+    // Criação das árvores com as inserções embaralhadas
     for (int i = 0; i < TAMVET; i++)
     {
         int qtd_blocos = sortearNumero();
-        int num_semanas = qtd_blocos;
+        int num_semanas = sortearNumero();
         char nome_curso[50];
         sprintf(nome_curso, "Curso %d", i + 1);
-        insrrCurs(&arvoreCursos, criarNoCurso(vetor[i], nome_curso, qtd_blocos, num_semanas));
+        inserirCurso(&arvoreCursos, criarNoCurso(vetor[i], nome_curso, qtd_blocos, num_semanas));
     }
 
     // Obtém o tempo final
@@ -87,43 +75,16 @@ int main()
     double media_tempo_insercao = tempo_total;
 
     // Exibe o tempo médio de preenchimento da árvore
-<<<<<<< Updated upstream:proj1/arvoreAVL/mainTestes.c
-    printf("Tempo medio: %.5f milissegundos\n", media_tempo_insercao);
-    
-    for (int i = 0; i < 30; i++){
-        // Obtém o tempo inicial
-        QueryPerformanceCounter(&inicio);
+    printf("Tempo medio de insercoes: %.6f milissegundos\n", media_tempo_insercao);
 
-        imprimirCursoPeloCodigo(arvoreCursos, 567); //610240 
-        
-        // Obtém o tempo final
-        QueryPerformanceCounter(&fim);
 
-        // Calcula o tempo total em milissegundos
-        double tempo_busca = (double)(fim.QuadPart - inicio.QuadPart) / frequencia.QuadPart * 1000;
-
-        tempo_total2 += tempo_busca;
-    }
-
-    // Calcula a média do tempo de inserção
-    double media_tempo_busca = tempo_total2 / 30;
-
-    // Exibe o tempo médio de preenchimento da árvore
-    printf("Tempo medio: %.5f milissegundos\n", media_tempo_busca);
-=======
-    printf("Tempo medio de insecao: %.6f milissegundos\n", media_tempo_insercao);
-
-    // BUSCA
+    // Tempo de busca
     tempo_total = 0.0;
 
-    // Obtém a frequência do contador de performance
-    QueryPerformanceFrequency(&frequencia);
-
-    // for (int i = 0; i < 30; i++){
     // Obtém o tempo inicial
     QueryPerformanceCounter(&inicio);
 
-    imprimirCursoPeloCodigo(arvoreCursos, 752220);
+    imprimirCursoPeloCodigo(arvoreCursos, (TAMVET-1));
 
     // Obtém o tempo final
     QueryPerformanceCounter(&fim);
@@ -132,14 +93,12 @@ int main()
     double tempo_busca = (double)(fim.QuadPart - inicio.QuadPart) / frequencia.QuadPart * 1000;
 
     tempo_total += tempo_busca;
-    // }
 
     // Calcula a média do tempo de inserção
     double media_tempo_busca = tempo_total;
 
     // Exibe o tempo médio de preenchimento da árvore
-    printf("Tempo medio busca: %.6f milissegundos\n", media_tempo_busca);
+    printf("Tempo medio de busca: %.6f milissegundos\n", media_tempo_busca);
 
->>>>>>> Stashed changes:arvoreAVL/mainTestes.c
     return 0;
 }
