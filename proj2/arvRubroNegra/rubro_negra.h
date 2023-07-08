@@ -24,10 +24,10 @@ void imprimirLinhas(Lista *no);
 void imprimirAvr(ArvRubroNegra  *raiz);
 
 //Encaminhadas
-void inserirLinha(Lista **no, int linha, int inseriu[]);
-ArvRubroNegra  *criaNo(char *palavra, int num_linha, int inseriu[]);
-void inserirPalavra(ArvRubroNegra  **raiz, char *palavra, int num_linha, int inseriu[]);
-void inserirRubro(ArvRubroNegra  **raiz, char *palavra, int num_linha, int inseriu[]);
+int inserirLinha(Lista **no, int linha);
+int criaNo(ArvRubroNegra **raiz, char *palavra, int num_linha);
+int inserirPalavra(ArvRubroNegra  **raiz, char *palavra, int num_linha);
+int inserirRubro(ArvRubroNegra  **raiz, char *palavra, int num_linha);
 void trocaCor(ArvRubroNegra *raiz);
 int cor(ArvRubroNegra *raiz);
 void rotacaoEsquerda(ArvRubroNegra **raiz);
