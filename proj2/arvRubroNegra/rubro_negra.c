@@ -263,3 +263,24 @@ void imprmrLinhs(Lista *raiz, int cont){
         imprmrLinhs(raiz->prox, cont+1);
     }
 }
+
+int buscrPalvr(ArvRubroNegra *raiz, char palavra[], ArvRubroNegra **No){
+    int achou = 0;
+    if(raiz != NULL){
+        if(strcmp(raiz->info->palavra, palavra) == 0){
+            *No = (ArvRubroNegra *)malloc(sizeof(ArvRubroNegra));
+            (*No)->info = (Info *)malloc(sizeof(Info));
+            (*No)->info->palavra = (char *)malloc((strlen(palavra) + 1) * sizeof(char));
+            achou = 1;
+            strcpy((*No)->info->palavra, raiz->info->palavra);
+            printf("Copiou palavra\n");
+            (*No)->info->num_lista = raiz->info->num_lista;
+            printf("Copiou\n");
+        } else if(strcmp(raiz->info->palavra, palavra) < 0){
+            achou = buscrPalvr(raiz->dir, palavra, No);
+        }else if(strcmp(raiz->info->palavra, palavra) > 0){
+            achou = buscrPalvr(raiz->esq, palavra, No);
+        }
+    }
+    return achou;
+}
