@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h> //usado para transformar as letras da palavra em minusculas
 
 #include "rubro_negra.h"
 
@@ -52,7 +53,7 @@ int inserirLinha(Lista **no, int num_linha){
         }
         
     } else {
-        inseriu = inserirLinha(&((*no)->prox), num_linha, inseriu);
+        inseriu = inserirLinha(&((*no)->prox), num_linha);
     }
 
     return inseriu;
@@ -72,12 +73,12 @@ int criaNo(ArvRubroNegra **raiz, char *palavra, int num_linha) {
      */
 
     int criou = 0;
-
     if (*raiz == NULL) {
         *raiz = (ArvRubroNegra *)malloc(sizeof(ArvRubroNegra));
         if (*raiz != NULL) {
             (*raiz)->info = (Info *)malloc(sizeof(Info));
             (*raiz)->info->palavra = (char *)malloc((strlen(palavra) + 1) * sizeof(char));
+            (*raiz)->info->num_lista = NULL;
 
             strcpy((*raiz)->info->palavra, palavra);
             inserirLinha(&((*raiz)->info->num_lista), num_linha);
@@ -96,74 +97,6 @@ int criaNo(ArvRubroNegra **raiz, char *palavra, int num_linha) {
 }
 
 
-int inserirPalavra(ArvRubroNegra  **raiz, char *palavra, int num_linha){
-    /**
-     * Insere uma palavra em uma árvore rubro-negra e associa um número de linha a ela.
-     *
-     * @param raiz Um ponteiro para o ponteiro da raiz da árvore rubro-negra.
-     * @param palavra A palavra a ser inserida na árvore.
-     * @param num_linha O número da linha em que a palavra está presente.
-     *
-     * @return O valor de criouNo, indicando o resultado da inserção:
-     *         - 0: Não foi criado um novo nó na árvore.
-     *         - 1: Foi criado um novo nó na árvore.
-     *         - 2: A palavra já existe na árvore e apenas o número da linha foi atualizada.
-     */
-    
-    int criouNo = 0;
-    if (*raiz == NULL){
-        criouNo = criaNo(raiz, palavra, num_linha);
-    }
-    //É verificado se o valor está na arvore, se estiver colocar o numero da linha na lista de numeros.
-    else if (strcmp((*raiz)->info->palavra, palavra) == 0){
-        criouNo = 2; //Já existe
-        inserirLinha(&((*raiz)->info->num_lista), num_linha);
-    } else if (strcmp((*raiz)->info->palavra, palavra) > 0){
-        criouNo = inserirPalavra(&((*raiz)->dir), palavra, num_linha);
-    } else if(strcmp((*raiz)->info->palavra, palavra) < 0) {
-        criouNo = inserirPalavra(&((*raiz)->esq), palavra, num_linha); 
-    }
-
-    if(cor((*raiz)->dir) == RED && cor((*raiz)->esq) == BLACK)
-        rotacaoEsquerda(raiz);
-    if(cor((*raiz)->esq) == RED && cor((*raiz)->esq->esq) == RED)
-        rotacaoDireita(raiz);
-    if(cor((*raiz)->esq) == RED && cor((*raiz)->dir) == RED)
-        trocaCor(*raiz);
-
-    return criouNo;
-}
-
-int inserirRubro(ArvRubroNegra  **raiz, char *palavra, int num_linha){
-    /**
-     * Insere uma palavra em uma árvore rubro-negra e associa um número de linha a ela.
-     *
-     * @param raiz Um ponteiro para o ponteiro da raiz da árvore rubro-negra.
-     * @param palavra A palavra a ser inserida na árvore.
-     * @param num_linha O número da linha em que a palavra está presente.
-     *
-     * @return O valor de inseriu, indicando o resultado da inserção:
-     *         - 0: A palavra não foi inserida na árvore.
-     *         - 1: A palavra foi inserida na árvore.
-     *         - 2: A palavra já existe na árvore e apenas o número da linha foi atualizada.
-     */
-
-    int inseriu = inserirPalavra(raiz, palavra, num_linha);
-    if (*raiz != NULL){
-        (*raiz)->cor = BLACK;
-    }
-    return inseriu;
-}
-
-void trocaCor(ArvRubroNegra  *raiz){
-    if(raiz != NULL){
-        raiz->cor = !raiz->cor; 
-        if(raiz->dir) {
-            raiz->dir->cor = !raiz->dir->cor;
-        } else if(raiz->esq)
-            raiz->esq->cor = !raiz->esq->cor; 
-    }
-}
 
 void rotacaoEsquerda(ArvRubroNegra **raiz){
     ArvRubroNegra *aux;
@@ -189,7 +122,144 @@ void rotacaoDireita(ArvRubroNegra **raiz){
     (*raiz)->dir->cor = RED;
 }
 
+void trocaCor(ArvRubroNegra  *raiz){
+    if(raiz != NULL){
+        raiz->cor = !raiz->cor; 
+        if(raiz->dir) {
+            raiz->dir->cor = !raiz->dir->cor;
+        } else if(raiz->esq)
+            raiz->esq->cor = !raiz->esq->cor; 
+    }
+}
+
+int inserirPalavra(ArvRubroNegra  **raiz, char *palavra, int num_linha){
+    /**
+     * Insere uma palavra em uma árvore rubro-negra e associa um número de linha a ela.
+     *
+     * @param raiz Um ponteiro para o ponteiro da raiz da árvore rubro-negra.
+     * @param palavra A palavra a ser inserida na árvore.
+     * @param num_linha O número da linha em que a palavra está presente.
+     *
+     * @return O valor de criouNo, indicando o resultado da inserção:
+     *         - 0: Não foi criado um novo nó na árvore.
+     *         - 1: Foi criado um novo nó na árvore.
+     *         - 2: A palavra já existe na árvore e apenas o número da linha foi atualizada.
+     */
+    
+    int criouNo = 0;
+    if (*raiz == NULL){
+        criouNo = criaNo(raiz, palavra, num_linha);
+    }
+    //É verificado se o valor está na arvore, se estiver colocar o numero da linha na lista de numeros.
+    else if (strcmp((*raiz)->info->palavra, palavra) == 0){
+        criouNo = 2; //Já existe
+        inserirLinha(&((*raiz)->info->num_lista), num_linha);
+    } else if (strcmp((*raiz)->info->palavra, palavra) < 0){
+        criouNo = inserirPalavra(&((*raiz)->dir), palavra, num_linha);
+    } else if(strcmp((*raiz)->info->palavra, palavra) > 0) {
+        criouNo = inserirPalavra(&((*raiz)->esq), palavra, num_linha); 
+    }
+
+    if(cor((*raiz)->dir) == RED && cor((*raiz)->esq) == BLACK)
+        rotacaoEsquerda(raiz);
+    if(cor((*raiz)->esq) == RED && cor((*raiz)->esq->esq) == RED)
+        rotacaoDireita(raiz);
+    if(cor((*raiz)->esq) == RED && cor((*raiz)->dir) == RED)
+        trocaCor(*raiz);
+
+    return criouNo;
+}
 
 
 
+int inserirRubro(ArvRubroNegra  **raiz, char *palavra, int num_linha){
+    /**
+     * Insere uma palavra em uma árvore rubro-negra e associa um número de linha a ela.
+     *
+     * @param raiz Um ponteiro para o ponteiro da raiz da árvore rubro-negra.
+     * @param palavra A palavra a ser inserida na árvore.
+     * @param num_linha O número da linha em que a palavra está presente.
+     *
+     * @return O valor de inseriu, indicando o resultado da inserção:
+     *         - 0: A palavra não foi inserida na árvore.
+     *         - 1: A palavra foi inserida na árvore.
+     *         - 2: A palavra já existe na árvore e apenas o número da linha foi atualizada.
+     */
 
+    int inseriu = inserirPalavra(raiz, palavra, num_linha);
+    if (*raiz != NULL){
+        (*raiz)->cor = BLACK;
+    }
+    return inseriu;
+}
+
+
+int lerArquivoTexto(ArvRubroNegra **raiz, const char *nome_arquivo) {
+    /**
+     * Lê um arquivo de texto e processa as palavras, inserindo-as em uma árvore rubro-negra.
+     *
+     * @param raiz Um ponteiro para o ponteiro da raiz da árvore rubro-negra.
+     * @param nome_arquivo O nome do arquivo de texto a ser lido.
+     *
+     * @return Um valor indicando se a leitura do arquivo foi bem-sucedida:
+     *         - 0: O arquivo não pôde ser aberto.
+     *         - 1: A leitura do arquivo foi bem-sucedida.
+     */
+
+    int leitura = 1;
+    FILE *arquivo = fopen(nome_arquivo, "r");
+    if (arquivo == NULL) {
+        leitura = 0;
+        return leitura;
+    }
+
+    char linha[1000];
+    int num_linha = 1;
+
+    while (fgets(linha, sizeof(linha), arquivo) != NULL) {
+        char *token = strtok(linha, " \t\n,.");
+        while (token != NULL) {
+            // Converte a palavra para letras minúsculas
+            for (int i = 0; token[i] != '\0'; i++) {
+                token[i] = tolower(token[i]);
+            }
+
+            inserirRubro(raiz, token, num_linha);
+
+            token = strtok(NULL, " \t\n,.");
+        }
+
+        num_linha++;
+    }
+
+    fclose(arquivo);
+    return leitura;
+}
+
+
+void imprmrInOrdem(ArvRubroNegra *raiz, int cont){
+    /**
+     * Imprime as palavras da árvore rubro-negra em ordem alfabética junto aos números das linhas em que a palavra aparece.
+     *
+     * @param raiz A raiz da árvore rubro-negra.
+     * @param cont Um contador para controle recursivo.
+     */
+    if(raiz != NULL){
+        imprmrInOrdem(raiz->esq, cont+1);
+        printf("%s: ", raiz->info->palavra);
+        imprmrLinhs(raiz->info->num_lista, 0);
+        printf("\n");
+        imprmrInOrdem(raiz->dir, cont+1);
+    }else if(cont == 0){
+        printf("Arvore vazia!\n");
+    }
+}
+
+void imprmrLinhs(Lista *raiz, int cont){
+    if(raiz!=NULL){
+        if(cont==0)
+            printf("%d", raiz->num_linha);
+        else printf(", %d", raiz->num_linha);
+        imprmrLinhs(raiz->prox, cont+1);
+    }
+}

@@ -17,7 +17,6 @@ typedef struct arvRubroNegra{
 }ArvRubroNegra;
 
 //Faltando...
-void lerArquivo(char *nomeArquivo, ArvRubroNegra **raiz, int inseriu[]);
 void buscar(ArvRubroNegra *raiz, char palavra[], int *achou);
 void excluirPalavra();
 void imprimirLinhas(Lista *no);
@@ -32,3 +31,6 @@ void trocaCor(ArvRubroNegra *raiz);
 int cor(ArvRubroNegra *raiz);
 void rotacaoEsquerda(ArvRubroNegra **raiz);
 void rotacaoDireita(ArvRubroNegra **raiz);
+int lerArquivoTexto(ArvRubroNegra **raiz, const char *nome_arquivo);
+void imprmrInOrdem(ArvRubroNegra *raiz, int cont);
+void imprmrLinhs(Lista *raiz, int cont);
